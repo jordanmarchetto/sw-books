@@ -2,8 +2,6 @@ TODO:
  - extend db to: books, users, book_progress
  - extend endpoints for: users, book_progress
  - create tables, seed db automatically
- - push server to git
- - push frontend to git
  - refine frontend
  - consider docker on dev server
  - consider github action, automatic deploy to dev server
@@ -14,3 +12,5 @@ Done:
  X - build initial table and rest endpoints
  X - build postman/insomnia collection
  X - build initial frontend
+ X - push server to git
+ X - push frontend to git
