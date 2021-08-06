@@ -4,13 +4,16 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon server.js",
-    "docker": "docker build -t jordanmarchetto/sw-books-server:1.0 ."
+    "dev": "nodemon -r dotenv/config server.js dotenv_config_path=.env.development",
+    "start": "nodemon -r dotenv/config server.js dotenv_config_path=.env.development",
+    "prod": "nodemon -r dotenv/config server.js dotenv_config_path=.env.docker",
+    "docker": "docker build -t jordanmarchetto/sw-books-server ."
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "dotenv": "^10.0.0",
     "koa": "^2.13.1",
     "koa-bodyparser": "^4.3.0",
     "koa-json": "^2.0.2",

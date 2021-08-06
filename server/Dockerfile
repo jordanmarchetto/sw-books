@@ -1,4 +1,4 @@
-FROM node:16
+FROM node:latest
 
 WORKDIR /app
 
@@ -12,4 +12,4 @@ ENV PORT=2222
 
 EXPOSE 2222
 
-CMD ["npm", "start"]
+CMD ["npm", "run", "prod"]
