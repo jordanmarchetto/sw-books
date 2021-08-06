@@ -1,0 +1,13 @@
+version: '3'
+services:
+    webserver:
+        build: .
+        ports:
+            - "2223:2222"
+    db:
+        image: "postgres"
+        ports:
+            - "5432:5432"
+        environment:
+            POSTGRES_PASSWORD: jordanmarchetto
+            POSTGRES_HOST_AUTH_METHOD: trust
