@@ -3,9 +3,10 @@ const KoaRouter = require('koa-router');
 const bodyParser = require('koa-bodyparser');
 const KoaJson = require('koa-json');
 const { Pool } = require('pg');
+const fs = require('fs');
+const replaceSpecialCharacters = require('replace-special-characters'); //used to sanitize sql statements
 
-//sample db
-const DB = { BOOKS: [{ title: "book 1", author: "author lname", completed: true, rating: 2 }, { title: "book 2", author: "fname author", completed: false }] };
+
 //table to reference in db
 const TABLE_NAME = "books";
 
@@ -20,6 +21,10 @@ server.use(bodyParser());
 //router middleware, allow routes
 server.use(router.routes()).use(router.allowedMethods());
 
+
+//////////////////////
+// SET UP AND INIT DB
+//////////////////////
 //set up db connector
 const pool = new Pool({
     host: process.env.DB_HOST,
@@ -43,7 +48,47 @@ pool.connect((err, client, release) => {
     })
 })
 
+//seed the db
+//the book data was scraped and dropped into books.json
+const seedDB = async () => {
+    const create_table_query = `CREATE TABLE IF NOT EXISTS ${TABLE_NAME}  (
+        book_id serial PRIMARY KEY,
+        title VARCHAR ( 50 ) NOT NULL,
+        author VARCHAR ( 50 ) NOT NULL,
+        book_timeline VARCHAR ( 50 ) NOT NULL,
+        release_date VARCHAR ( 50 ) NOT NULL,
+        completed BOOLEAN NOT NULL,
+        rating NUMERIC 
+    );`;
+    console.log("creating books table");
+    await pool.query(create_table_query);
 
+    console.log("checking table contents")
+    const { rows } = await pool.query(`SELECT * FROM ${TABLE_NAME};`).catch(e => { console.error(e) })
+    if (rows.length < 1) {
+        console.log("populating books");
+        let rawdata = fs.readFileSync('books.json');
+        let books = JSON.parse(rawdata);
+        books.forEach(async (book) => {
+            const { title, author, book_timeline, release_date } = book;
+            const add_book_query = `INSERT INTO ${TABLE_NAME} (title, author, book_timeline, release_date, completed) VALUES ('` + replaceSpecialCharacters(title) + `', '` + replaceSpecialCharacters(author) + `', '${book_timeline}', '${release_date}', false);`;
+            console.log("running: " + add_book_query);
+            await pool.query(add_book_query);
+        });
+    } else {
+        console.log("table has rows, adding nothing");
+    }
+
+}
+seedDB();
+//////////////////////
+// END: SET UP AND INIT DB
+//////////////////////
+
+
+//////////////////////
+// REST ACTIONS / DB FUNCTIONS
+//////////////////////
 //get all books from the db
 const getAllBooks = async (ctx) => {
     const { rows } = await pool.query(`SELECT * FROM ${TABLE_NAME};`).catch(e => { console.error(e) })
@@ -81,6 +126,11 @@ const updateBook = async (ctx) => {
     await pool.query(query);
     ctx.body = await getBook(book_id);
 }
+//////////////////////
+// END: REST ACTIONS / DB FUNCTIONS
+//////////////////////
+
+
 
 //define routes
 router.get("/books", getAllBooks);
