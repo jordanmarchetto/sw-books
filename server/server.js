@@ -4,6 +4,7 @@ const bodyParser = require('koa-bodyparser');
 const KoaJson = require('koa-json');
 const { Pool } = require('pg');
 const fs = require('fs');
+const cors = require('@koa/cors');
 const replaceSpecialCharacters = require('replace-special-characters'); //used to sanitize sql statements
 
 
@@ -19,6 +20,7 @@ server.use(KoaJson());
 //parser middleware, to parse ctx
 server.use(bodyParser());
 //router middleware, allow routes
+server.use(cors());
 server.use(router.routes()).use(router.allowedMethods());
 
 
