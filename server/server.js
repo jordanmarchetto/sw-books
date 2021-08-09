@@ -138,6 +138,14 @@ const updateBook = async (ctx) => {
     await pool.query(query);
     ctx.body = await getBook(book_id);
 }
+
+//drop the whole books table
+const dropDB = async (ctx) => {
+    const query = `DROP TABLE ${TABLE_NAME};`;
+    const { rows } = await pool.query(query);
+    console.log("Deleting table: " + query);
+    return {status: "Success, tables dropped."};
+}
 //////////////////////
 // END: REST ACTIONS / DB FUNCTIONS
 //////////////////////
@@ -149,6 +157,7 @@ router.get("/books/:book_id", async (ctx) => ctx.body = await getBook(ctx.params
 router.put("/books/:book_id", updateBook);
 router.delete("/books/:book_id", async (ctx) => ctx.body = await deleteBook(ctx.params.book_id));
 router.post("/books", addBook);
+router.delete("/drop-full-db", dropDB);
 
 //start server
 const port = process.env.SERVER_PORT || 2222;
