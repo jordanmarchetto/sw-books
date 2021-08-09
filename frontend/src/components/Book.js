@@ -1,9 +1,10 @@
-
+/*
+Major component; handles interactivity, display, and passes info back up to Main.js
+*/
 import React, { useState, useEffect } from 'react';
 import "../css/book.css";
 import icon_star from '../images/icon_star.png';
 import icon_star_inactive from '../images/icon_star_inactive.png';
-
 
 const Book = (props) => {
     const updateBook = props.updateBook;
@@ -13,12 +14,12 @@ const Book = (props) => {
     const [editing, setEditing] = useState(false);
     const [starRating, setStarRating] = useState(props.book.rating);
 
+    //TODO: have this close other books
     const handleClick = () => {
         setEditing(!editing);
     }
 
-
-    //output the rating as stars
+    //output the rating as stars, handles editable and non-editable versions
     const bookRating = (editable) => {
         let res = [];
         for (let i = 1; i <= 5; i++) {
@@ -31,17 +32,19 @@ const Book = (props) => {
         return res;
     }
 
-
+    //separate useEffect for when we are changing the rating from clicking stars
     useEffect(() => {
         console.log("rating changed: " + starRating);
         updateHandler(book.book_id);
     }, [starRating]);
 
+    //when parents update props, make sure to update component state
     useEffect(() => {
         console.log("book updated");
         setBook(props.book);
     }, [props.book]);
 
+    //take all the data from the editable form, and pass it up to the main component
     const updateHandler = (book_id) => {
         //turn form into js obj and pass back to Main.js
         const form = document.querySelector('#edit-form-' + book_id);
@@ -53,7 +56,6 @@ const Book = (props) => {
         setBook(payload);
         updateBook(payload);
     }
-
 
 
     if (editing === false) {

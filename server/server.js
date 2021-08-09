@@ -140,7 +140,6 @@ const updateBook = async (ctx) => {
 //////////////////////
 
 
-
 //define routes
 router.get("/books", getAllBooks);
 router.get("/books/:book_id", async (ctx) => ctx.body = await getBook(ctx.params.book_id));

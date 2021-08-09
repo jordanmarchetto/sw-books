@@ -6,6 +6,8 @@ TODO:
  - make "add Book" functional
  - further improve css
  - add "completed" indicator
+ - test/spruce up loading/error for Main.js
+ - test deploy, make sure api url works in docker image
 
 
 Done:

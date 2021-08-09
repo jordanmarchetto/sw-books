@@ -1,11 +1,13 @@
+/*
+Simple component for listing out all the books
+*/
 import Book from "./Book";
-const ListBooks = ({books, updateBook}) => {
-
+const ListBooks = ({ books, updateBook }) => {
 
     const getBooks = () => {
         let res = [];
-        if(books.length>0){
-            res = books.map((b)=>{return <Book key={b.book_id} book={b} updateBook={updateBook}  />});
+        if (books.length > 0) {
+            res = books.map((b) => { return <Book key={b.book_id} book={b} updateBook={updateBook} /> });
         }
         return res;
     }
@@ -19,5 +21,3 @@ const ListBooks = ({books, updateBook}) => {
 }
 
 export default ListBooks;
-
-
