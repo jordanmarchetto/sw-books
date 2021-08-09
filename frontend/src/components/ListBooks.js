@@ -2,7 +2,6 @@
 Simple component for listing out all the books
 */
 import Book from "./Book";
-import React, { useState } from 'react';
 const ListBooks = ({ books, updateBook, activeEditor, clickHandler }) => {
 
     //store which editor we're using here, so we can toggle off all the others, like an accordion

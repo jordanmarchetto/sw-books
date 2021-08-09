@@ -18,30 +18,6 @@ const Book = (props) => {
     const [book, setBook] = useState(props.book);
     const [starRating, setStarRating] = useState(props.book.rating);
 
-
-    //output the rating as stars, handles editable and non-editable versions
-    const bookRating = (editable) => {
-        let res = [];
-        for (let i = 1; i <= 5; i++) {
-            if (i <= Number(starRating)) {
-                res.push(<img key={i} className="star-icon" src={icon_star} alt="star icon" onClick={() => editable ? setStarRating(i) : ''} />);
-            } else {
-                res.push(<img key={i} className="star-icon inactive" src={icon_star_inactive} alt="inactivestar icon" onClick={() => editable ? setStarRating(i) : ''} />);
-            }
-        }
-        return res;
-    }
-
-    //separate useEffect for when we are changing the rating from clicking stars
-    useEffect(() => {
-        updateHandler(book.book_id);
-    }, [starRating]);
-
-    //when parents update props, make sure to update component state
-    useEffect(() => {
-        setBook(props.book);
-    }, [props.book]);
-
     //take all the data from the editable form, and pass it up to the main component
     const updateHandler = (book_id) => {
         let formSelector = '#edit-form-' + book_id;
@@ -70,6 +46,30 @@ const Book = (props) => {
         setBook(payload);
         addBook(payload);
     }
+
+    //output the rating as stars, handles editable and non-editable versions
+    const bookRating = (editable) => {
+        let res = [];
+        for (let i = 1; i <= 5; i++) {
+            if (i <= Number(starRating)) {
+                res.push(<img key={i} className="star-icon" src={icon_star} alt="star icon" onClick={() => editable ? setStarRating(i) : ''} />);
+            } else {
+                res.push(<img key={i} className="star-icon inactive" src={icon_star_inactive} alt="inactivestar icon" onClick={() => editable ? setStarRating(i) : ''} />);
+            }
+        }
+        return res;
+    }
+
+    //separate useEffect for when we are changing the rating from clicking stars
+    useEffect(() => {
+        updateHandler(book.book_id);
+    }, [starRating, book.book_id]);
+
+    //when parents update props, make sure to update component state
+    useEffect(() => {
+        setBook(props.book);
+    }, [props.book]);
+
 
 
     if (editing === false) {

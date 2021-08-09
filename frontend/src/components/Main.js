@@ -7,7 +7,7 @@ import React, { useState, useEffect } from "react";
 import "../css/main.css";
 
 const Main = () => {
-    const api_url = "http://localhost:2223";
+    const api_url = "http://" + process.env.REACT_APP_API_URL + ":" + process.env.REACT_APP_API_PORT;
     const [error, setError] = useState(null);
     const [dataLoaded, setDataLoaded] = useState(false);
     const [books, setBooks] = useState([]);
@@ -20,7 +20,7 @@ const Main = () => {
             .then((response) => response.json())
             .then((data) => { console.log(data); setDataLoaded(true); setBooks(data); })
             .catch((error) => { setDataLoaded(true); setError(error) });
-    }, []);
+    },[api_url]);
 
     //receive a book object from Book.js
     //consider sanitizing here if needed, but mostly just call PUT
@@ -84,6 +84,9 @@ const Main = () => {
                 <ListBooks books={books} updateBook={updateBook} activeEditor={activeEditor} clickHandler={handleBookClick}/>
                 <h2 className="title" onClick={() => handleBookClick(0)}>Add Book</h2>
                 <Book book={{ title: "", author: "", release_date: "", book_timeline: "", rating: 0, completed: false }} addBook={addBook} editing={true} handleClick={() => null} adding_book={true} />
+                <div className="hidden">
+                    using api_url: {api_url}
+                </div>
             </div>
         );
     }
