@@ -118,7 +118,7 @@ const deleteBook = async (book_id) => {
 const addBook = async (ctx) => {
     const body = ctx.request.body;
     const { title, author, completed, rating, release_date, book_timeline } = body;
-    const query = `INSERT INTO ${TABLE_NAME} (title, author, completed, rating) VALUES ('${title}', '${author}', '${completed}', '${rating}') RETURNING book_id;`;
+    const query = `INSERT INTO ${TABLE_NAME} (title, author, completed, rating, release_date, book_timeline) VALUES ('${title}', '${author}', '${completed}', '${rating}', '${release_date}', '${book_timeline}') RETURNING book_id;`;
     console.log("Adding book: " + query);
     const book_id = await pool.query(query).then(res => res.rows[0].book_id);
     ctx.body = await getBook(book_id);
