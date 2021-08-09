@@ -6,7 +6,7 @@ TODO:
  - test/spruce up loading/error for Main.js
  - test deploy, make sure api url works in docker image
  - implement delete book
- - implement delete all books
+ - implement delete all books (can 'delete' to localhost/drop-full-db, and restart server)
 
 
 Done:
@@ -46,9 +46,16 @@ Commands:
  docker run -p 2222:2222 jordanmarchetto/sw-books-server
  psql -h localhost -p 5432 -d postgres -U postgres
 
-Install (on server):
+Install (server):
  git clone https://github.com/jordanmarchetto/sw-books.git 
  cd sw-books/server/
  npm install
  npm run docker
  docker-compose up
+
+Install (frontend):
+ cd sw-books/frontend
+ npm install
+ npm start
+
+
