@@ -2,12 +2,11 @@ TODO:
  - extend db to: books, users, book_progress
  - extend endpoints for: users, book_progress
  - consider github action, automatic deploy to dev server
- - close other books when one is being edited //see: changeFocus
- - make "add Book" functional
- - further improve css
  - add "completed" indicator
  - test/spruce up loading/error for Main.js
  - test deploy, make sure api url works in docker image
+ - implement delete book
+ - implement delete all books
 
 
 Done:
@@ -19,6 +18,9 @@ Done:
  X - push frontend to git
  X - setup docker on dev server
  X - create tables, seed db automatically
+ X - close other books when one is being edited //see: changeFocus
+ X - make "add Book" functional
+ X - further improve css
 
 
 

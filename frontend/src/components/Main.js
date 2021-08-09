@@ -7,10 +7,13 @@ import React, { useState, useEffect } from "react";
 import "../css/main.css";
 
 const Main = () => {
+    const api_url = "http://localhost:2223";
     const [error, setError] = useState(null);
     const [dataLoaded, setDataLoaded] = useState(false);
     const [books, setBooks] = useState([]);
-    const api_url = "http://localhost:2223";
+    const [activeEditor, setActiveEditor] = useState(false); //store which editor we're using here, so we can toggle off all the others, like an accordion
+
+    
 
     useEffect(() => {
         fetch(api_url + "/books", { mode: 'cors' })
@@ -45,6 +48,7 @@ const Main = () => {
             .catch((error) => { console.log(error); })
     }
 
+    //add a book to the db
     const addBook = async (book) => {
         console.log("received book to add: " + JSON.stringify(book));
         if (book.add_book === "true") {
@@ -56,11 +60,6 @@ const Main = () => {
             })
                 .then((response) => response.json())
                 .then((data) => {
-                    //let updated_books = books;
-                    //const book_index = updated_books.findIndex(b => b.book_id === id);
-                    //updated_books[book_index] = data;
-                    //console.log(data);
-                    //setBooks(updated_books);
                     console.log(data);
                     window.location.hash = "book-added";
                     window.location.reload();
@@ -69,17 +68,21 @@ const Main = () => {
         }
     }
 
+    const handleBookClick = (book_id) => {
+        setActiveEditor(book_id);
+    }
+
     //output errors/loading/content
     if (error) {
-        return <div>Error: {error.message}</div>;
+        return <div className="error">Error: {error.message}</div>;
     } else if (!dataLoaded) {
-        return <div>Loading...</div>;
+        return <div className="loading"><h1>Loading...</h1></div>;
     } else {
         return (
             <div>
-                <h2>All Books</h2>
-                <ListBooks books={books} updateBook={updateBook} />
-                <h3>Add Book</h3>
+                <h1 className="title" onClick={() => handleBookClick(0)}>Cannon Star Wars Books</h1>
+                <ListBooks books={books} updateBook={updateBook} activeEditor={activeEditor} clickHandler={handleBookClick}/>
+                <h2 className="title" onClick={() => handleBookClick(0)}>Add Book</h2>
                 <Book book={{ title: "", author: "", release_date: "", book_timeline: "", rating: 0, completed: false }} addBook={addBook} editing={true} handleClick={() => null} adding_book={true} />
             </div>
         );

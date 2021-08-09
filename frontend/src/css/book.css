@@ -1,14 +1,38 @@
 
 .book{ 
     border: 1px solid black;
-    margin: 10px 10px;
     padding: 10px;
     border-radius: 3px;
     background: var(--content-bg);
     background: var(--content-bg-gradient);
     color: var(--content-text);
+    display: flex;
+    justify-content: space-between;
+    max-width: 90%;
+    margin: 10px auto;
 }
 
+.book.editable form{
+    display:flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.book.editable form .right-col{
+    text-align: right;
+}
+
+.book.completed{
+    border-color: var(--secondary-accent-color);
+}
+.completed-icon{
+    color: var(--secondary-accent-color);
+    margin-left: 6px;
+}
+.icon-spacer{
+    width: 30px;
+    display: inline-block;
+}
 
 .book:hover{
     border-color: var(--accent-color);
@@ -31,7 +55,6 @@
 .book.editable .star-icon:hover {
     cursor: pointer;
 }
-
 
 .book.editable .star-icon:hover {
     /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#fdec26+40,ffffff+100&1+0,0+69 */

@@ -1,5 +1,6 @@
 :root {
     --accent-color: #f4e425;
+    --secondary-accent-color: #25f459;
     --default-text: #fff;
     --content-text: #222;
     --content-bg: rgb(221, 221, 221);
@@ -31,4 +32,27 @@ h1, h2, h3, h4, h5 {
 
 .hidden {
     display: none !important;
+}
+
+
+.loading{
+    width: 100%;
+    text-align: center;
+    margin:40% auto;
+}
+
+.error{
+    padding: 10px;
+    width: auto;
+    max-width: 80%;
+    margin: 30% auto;
+    background: var(--content-bg);
+    background: var(--content-bg-gradient);
+    color: var(--content-text);
+    border-radius: 3px;
+    font-size: 1.2em;
+}
+
+h1.title, h2.title{
+    text-align: center;
 }
