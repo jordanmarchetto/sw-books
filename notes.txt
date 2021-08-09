@@ -1,10 +1,11 @@
 TODO:
  - extend db to: books, users, book_progress
  - extend endpoints for: users, book_progress
- - create tables, seed db automatically
- - refine frontend
- - consider docker on dev server
  - consider github action, automatic deploy to dev server
+ - close other books when one is being edited //see: changeFocus
+ - make "add Book" functional
+ - further improve css
+ - add "completed" indicator
 
 
 Done:
@@ -14,3 +15,36 @@ Done:
  X - build initial frontend
  X - push server to git
  X - push frontend to git
+ X - setup docker on dev server
+ X - create tables, seed db automatically
+
+
+
+List of novels:
+ https://starwars.fandom.com/wiki/Timeline_of_canon_books#js
+
+Scrape the books as json:
+    let books = [];
+    $("#prettytable tbody tr.novel").each(function(){
+		let book = {};
+		let cols = $(this).find("td");
+		book.book_timeline = $(this).find("td:first-child a").attr("title");
+		book.book_timeline = book.book_timeline?book.book_timeline:"";
+		book.title = cols[2].innerText.replaceAll(/\n.*/g, "").replaceAll(/\[.*/g, "").replaceAll("'", "");
+		book.author = cols[3].innerText.replaceAll(/\n.*/g, "").replaceAll(/\[.*/g, "").replaceAll("'", "");
+		book.release_date = cols[4].innerText.replaceAll(/\n.*/g, "");
+		books.push(book);
+    });
+    console.dir(books);
+
+Commands:
+ docker build -t jordanmarchetto/sw-books-server .
+ docker run -p 2222:2222 jordanmarchetto/sw-books-server
+ psql -h localhost -p 5432 -d postgres -U postgres
+
+Install (on server):
+ git clone https://github.com/jordanmarchetto/sw-books.git 
+ cd sw-books/server/
+ npm install
+ npm run docker
+ docker-compose up

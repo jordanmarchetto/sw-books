@@ -93,7 +93,10 @@ seedDB();
 //////////////////////
 //get all books from the db
 const getAllBooks = async (ctx) => {
-    const { rows } = await pool.query(`SELECT * FROM ${TABLE_NAME};`).catch(e => { console.error(e) })
+    const order_by = "title";
+    const query = `SELECT * FROM ${TABLE_NAME} ORDER BY ${order_by};`;
+    console.log("getting books: " + query);
+    const { rows } = await pool.query(query).catch(e => { console.error(e) })
     ctx.body = rows;
 }
 
@@ -112,7 +115,7 @@ const deleteBook = async (book_id) => {
 //add a single book to the db
 const addBook = async (ctx) => {
     const body = ctx.request.body;
-    const { title, author, completed, rating } = body;
+    const { title, author, completed, rating, release_date, book_timeline } = body;
     const query = `INSERT INTO ${TABLE_NAME} (title, author, completed, rating) VALUES ('${title}', '${author}', '${completed}', '${rating}') RETURNING book_id;`;
     const book_id = await pool.query(query).then(res => res.rows[0].book_id);
     ctx.body = await getBook(book_id);
@@ -122,9 +125,13 @@ const addBook = async (ctx) => {
 //expects all fields/columns to be populated
 const updateBook = async (ctx) => {
     const body = ctx.request.body;
-    const { title, author, completed, rating } = body;
+    let { title, author, completed, rating, release_date, book_timeline } = body;
     const book_id = ctx.params.book_id;
-    const query = `UPDATE ${TABLE_NAME} SET title = '${title}', author = '${author}', completed = '${completed}', rating = '${rating}' WHERE book_id = '${book_id}'`;
+    //make sure we're trying to update an actual id
+    if(!Number(book_id)) return;
+    rating = Number(rating)?rating:"NULL"; 
+    const query = `UPDATE ${TABLE_NAME} SET title = '${title}', author = '${author}', completed = '${completed}', rating = ${rating}, release_date = '${release_date}', book_timeline = '${book_timeline}' WHERE book_id = '${book_id}'`;
+    console.log("Updating book: " + query)
     await pool.query(query);
     ctx.body = await getBook(book_id);
 }
