@@ -8,16 +8,20 @@ import icon_star_inactive from '../images/icon_star_inactive.png';
 
 const Book = (props) => {
     const updateBook = props.updateBook;
+    const editing = props.editing;
+    const handleClick = props.handleClick;
     //const changeFocus = props.changeFocus;
     const serialize = require('form-serialize-improved');
     const [book, setBook] = useState(props.book);
-    const [editing, setEditing] = useState(false);
+    //const [editing, setEditing] = useState(false);
     const [starRating, setStarRating] = useState(props.book.rating);
 
     //TODO: have this close other books
+    /*
     const handleClick = () => {
         setEditing(!editing);
     }
+    */
 
     //output the rating as stars, handles editable and non-editable versions
     const bookRating = (editable) => {
