@@ -1,0 +1,58 @@
+
+.book{ 
+    border: 1px solid black;
+    margin: 10px 10px;
+    padding: 10px;
+    border-radius: 3px;
+    background: var(--content-bg);
+    background: var(--content-bg-gradient);
+    color: var(--content-text);
+}
+
+
+.book:hover{
+    border-color: var(--accent-color);
+    cursor: pointer;
+}
+
+.book .title{
+    font-weight:bold;
+}
+
+.book .author{
+    font-style:italic;
+    margin: 0px 6px;
+}
+
+.book .release_date{
+    margin-left: 10px;
+}
+
+.book.editable .star-icon:hover {
+    cursor: pointer;
+}
+
+
+.book.editable .star-icon:hover {
+    /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#fdec26+40,ffffff+100&1+0,0+69 */
+    background: -moz-radial-gradient(center, ellipse cover, rgba(253, 236, 38, 1) 0%, rgba(253, 236, 38, 0.42) 40%, rgba(254, 245, 143, 0) 69%, rgba(255, 255, 255, 0) 100%);
+    /* FF3.6-15 */
+    background: -webkit-radial-gradient(center, ellipse cover, rgba(253, 236, 38, 1) 0%, rgba(253, 236, 38, 0.42) 40%, rgba(254, 245, 143, 0) 69%, rgba(255, 255, 255, 0) 100%);
+    /* Chrome10-25,Safari5.1-6 */
+    background: radial-gradient(ellipse at center, rgba(253, 236, 38, 1) 0%, rgba(253, 236, 38, 0.42) 40%, rgba(254, 245, 143, 0) 69%, rgba(255, 255, 255, 0) 100%);
+    /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid: DXImageTransform.Microsoft.gradient( startColorstr='#fdec26', endColorstr='#00ffffff', GradientType=1);
+    /* IE6-9 fallback on horizontal gradient */
+}
+
+.book.editable .star-icon.inactive:hover {
+    /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#525252+40,ffffff+100&1+1,0+69 */
+    background: -moz-radial-gradient(center, ellipse cover, rgba(82, 82, 82, 1) 1%, rgba(82, 82, 82, 0.43) 40%, rgba(166, 166, 166, 0) 69%, rgba(255, 255, 255, 0) 100%);
+    /* FF3.6-15 */
+    background: -webkit-radial-gradient(center, ellipse cover, rgba(82, 82, 82, 1) 1%, rgba(82, 82, 82, 0.43) 40%, rgba(166, 166, 166, 0) 69%, rgba(255, 255, 255, 0) 100%);
+    /* Chrome10-25,Safari5.1-6 */
+    background: radial-gradient(ellipse at center, rgba(82, 82, 82, 1) 1%, rgba(82, 82, 82, 0.43) 40%, rgba(166, 166, 166, 0) 69%, rgba(255, 255, 255, 0) 100%);
+    /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid: DXImageTransform.Microsoft.gradient( startColorstr='#525252', endColorstr='#00ffffff', GradientType=1);
+    /* IE6-9 fallback on horizontal gradient */
+}

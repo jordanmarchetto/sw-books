@@ -1,0 +1,34 @@
+:root {
+    --accent-color: #f4e425;
+    --default-text: #fff;
+    --content-text: #222;
+    --content-bg: rgb(221, 221, 221);
+    --content-bg-gradient: linear-gradient(135deg, rgba(221, 221, 221, 1) 0%, rgba(221, 221, 221, .8) 100%);
+    --text-font-stack: Roboto, "Open Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+    --heading-font-stack: 'Georama', sans-serif;
+}
+
+@import url('https://fonts.googleapis.com/css?family=Roboto');
+@import url('https://fonts.googleapis.com/css2?family=Georama:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600&display=swap');
+body {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    color: var(--default-text);
+    font-family: var(--font-stack);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background: rgb(29, 31, 37);
+    background: url('./images/stars.png') center center repeat, linear-gradient(180deg, rgba(29, 31, 37, 1) 0%, rgba(5, 8, 14, 1) 100%);
+    background-size: 200px;
+}
+
+h1, h2, h3, h4, h5 {
+    color: var(--accent-color);
+    font-family: var(--heading-font-stack);
+    font-variant: small-caps;
+}
+
+.hidden {
+    display: none !important;
+}
