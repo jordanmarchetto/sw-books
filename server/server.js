@@ -56,10 +56,10 @@ const seedDB = async () => {
     const create_table_query = `CREATE TABLE IF NOT EXISTS ${TABLE_NAME}  (
         book_id serial PRIMARY KEY,
         title VARCHAR ( 50 ) NOT NULL,
-        author VARCHAR ( 50 ) NOT NULL,
-        book_timeline VARCHAR ( 50 ) NOT NULL,
-        release_date VARCHAR ( 50 ) NOT NULL,
-        completed BOOLEAN NOT NULL,
+        author VARCHAR ( 50 ),
+        book_timeline VARCHAR ( 50 ),
+        release_date VARCHAR ( 50 ),
+        completed BOOLEAN NOT NULL DEFAULT 'false',
         rating NUMERIC 
     );`;
     console.log("creating books table");
@@ -95,7 +95,7 @@ seedDB();
 const getAllBooks = async (ctx) => {
     const order_by = "title";
     const query = `SELECT * FROM ${TABLE_NAME} ORDER BY ${order_by};`;
-    console.log("getting books: " + query);
+    console.log("Getting books: " + query);
     const { rows } = await pool.query(query).catch(e => { console.error(e) })
     ctx.body = rows;
 }
@@ -108,7 +108,9 @@ const getBook = async (book_id) => {
 
 //remove a single book from db, based on book_id
 const deleteBook = async (book_id) => {
-    const { rows } = await pool.query(`DELETE FROM ${TABLE_NAME} WHERE book_id = ${book_id};`);
+    const query = `DELETE FROM ${TABLE_NAME} WHERE book_id = ${book_id};`;
+    const { rows } = await pool.query(query);
+    console.log("Deleting book: " + query);
     return {};
 }
 
@@ -117,6 +119,7 @@ const addBook = async (ctx) => {
     const body = ctx.request.body;
     const { title, author, completed, rating, release_date, book_timeline } = body;
     const query = `INSERT INTO ${TABLE_NAME} (title, author, completed, rating) VALUES ('${title}', '${author}', '${completed}', '${rating}') RETURNING book_id;`;
+    console.log("Adding book: " + query);
     const book_id = await pool.query(query).then(res => res.rows[0].book_id);
     ctx.body = await getBook(book_id);
 }

@@ -5,23 +5,17 @@ import React, { useState, useEffect } from 'react';
 import "../css/book.css";
 import icon_star from '../images/icon_star.png';
 import icon_star_inactive from '../images/icon_star_inactive.png';
+import serialize from 'form-serialize-improved';
 
 const Book = (props) => {
     const updateBook = props.updateBook;
+    const addBook = props.addBook;
     const editing = props.editing;
+    const adding_book = props.adding_book;
     const handleClick = props.handleClick;
-    //const changeFocus = props.changeFocus;
-    const serialize = require('form-serialize-improved');
     const [book, setBook] = useState(props.book);
-    //const [editing, setEditing] = useState(false);
     const [starRating, setStarRating] = useState(props.book.rating);
 
-    //TODO: have this close other books
-    /*
-    const handleClick = () => {
-        setEditing(!editing);
-    }
-    */
 
     //output the rating as stars, handles editable and non-editable versions
     const bookRating = (editable) => {
@@ -38,27 +32,41 @@ const Book = (props) => {
 
     //separate useEffect for when we are changing the rating from clicking stars
     useEffect(() => {
-        console.log("rating changed: " + starRating);
         updateHandler(book.book_id);
     }, [starRating]);
 
     //when parents update props, make sure to update component state
     useEffect(() => {
-        console.log("book updated");
         setBook(props.book);
     }, [props.book]);
 
     //take all the data from the editable form, and pass it up to the main component
     const updateHandler = (book_id) => {
+        let formSelector = '#edit-form-' + book_id;
         //turn form into js obj and pass back to Main.js
-        const form = document.querySelector('#edit-form-' + book_id);
+        const form = document.querySelector(formSelector);
         let payload = serialize(form, { hash: true, booleans: true });
+        if(!Number(payload.book_id)) return;
         payload.book_id = Number(payload.book_id);
         payload.completed = payload.completed === true || payload.completed === false ? payload.completed : false;
         payload.rating = Number(starRating);
-        console.log("sending payload:" + JSON.stringify(payload));
+        console.log("updateHandler: sending payload:" + JSON.stringify(payload));
         setBook(payload);
         updateBook(payload);
+    }
+
+    const addBookHandler = () => {
+        console.log("sending a book");
+        let formSelector = '#edit-form-add';
+        //turn form into js obj and pass back to Main.js
+        const form = document.querySelector(formSelector);
+        let payload = serialize(form, { hash: true, booleans: true });
+        delete payload.book_id;
+        payload.completed = payload.completed === true || payload.completed === false ? payload.completed : false;
+        payload.rating = Number(starRating);
+        console.log("addBookHandler: sending payload:" + JSON.stringify(payload));
+        setBook(payload);
+        addBook(payload);
     }
 
 
@@ -74,7 +82,7 @@ const Book = (props) => {
                 <span className="completed">{book.completed}</span>
             </div>
         );
-    } else {
+    } else if (adding_book !== true) {
         return (
             <div className="book editable">
                 <form id={"edit-form-" + book.book_id}>
@@ -88,7 +96,21 @@ const Book = (props) => {
                 </form>
             </div>
         );
-
+    } else {
+        return (
+            <div className="book editable adding-book">
+                <form id="edit-form-add" method="post">
+                    <input type="hidden" name="add_book" value="true" />
+                    <input type="text" name="title" placeholder="Book Title" />
+                    <input type="text" name="author" placeholder="Author Name" />
+                    <input type="text" name="book_timeline" placeholder="Book Timeline (ex: 0 BBY)" />
+                    <input type="text" name="release_date" placeholder="Release Date (YYYY-MM-DD)" />
+                    {bookRating(true)}
+                    <label>Completed: <input type="checkbox" name="completed" /></label>
+                    <a onClick={() => addBookHandler(null, true)} >Save</a>
+                </form>
+            </div>
+        );
     }
 
 }

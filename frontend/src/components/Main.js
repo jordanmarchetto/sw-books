@@ -2,7 +2,7 @@
 Major component; runs API cmds, holds all the books data
 */
 import ListBooks from "./ListBooks";
-import AddBook from "./AddBook";
+import Book from "./Book";
 import React, { useState, useEffect } from "react";
 import "../css/main.css";
 
@@ -25,9 +25,9 @@ const Main = () => {
     const updateBook = async (book) => {
         console.log("received book update: " + JSON.stringify(book));
         const id = book.book_id;
-
         //dont run api if book isn't real
         if (!Number(id)) return;
+
         await fetch(api_url + "/books/" + id, {
             method: 'put',
             mode: 'cors',
@@ -43,7 +43,30 @@ const Main = () => {
                 setBooks(updated_books);
             })
             .catch((error) => { console.log(error); })
+    }
 
+    const addBook = async (book) => {
+        console.log("received book to add: " + JSON.stringify(book));
+        if (book.add_book === "true") {
+            await fetch(api_url + "/books", {
+                method: 'post',
+                mode: 'cors',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(book)
+            })
+                .then((response) => response.json())
+                .then((data) => {
+                    //let updated_books = books;
+                    //const book_index = updated_books.findIndex(b => b.book_id === id);
+                    //updated_books[book_index] = data;
+                    //console.log(data);
+                    //setBooks(updated_books);
+                    console.log(data);
+                    window.location.hash = "book-added";
+                    window.location.reload();
+                })
+                .catch((error) => { console.log(error); })
+        }
     }
 
     //output errors/loading/content
@@ -57,7 +80,7 @@ const Main = () => {
                 <h2>All Books</h2>
                 <ListBooks books={books} updateBook={updateBook} />
                 <h3>Add Book</h3>
-                <AddBook />
+                <Book book={{ title: "", author: "", release_date: "", book_timeline: "", rating: 0, completed: false }} addBook={addBook} editing={true} handleClick={() => null} adding_book={true} />
             </div>
         );
     }
